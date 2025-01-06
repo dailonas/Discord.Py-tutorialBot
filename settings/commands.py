@@ -69,5 +69,50 @@ async def uban(ctx, member: discord.Member, reason: str = "Raison non spécifié
     except discord.HTTPException:
         return await ctx.send("Une erreur est survenue lors du déban de l'utilisateur.")
     
+@bot.command()
+async def serverInfo(ctx):
+    guild = ctx.guild
+    serverName = guild.name
+    serverDescription = guild.description
+    member_count = len(guild.members)
+    text_channels = len(guild.text_channels)
+    voice_channels = len(guild.voice_channels)
+    roles = len(guild.roles)
+    emojis = len(guild.emojis)
+    owner = guild.owner
+
+    embed = discord.Embed(
+        title=f"Informations sur le serveur : {serverName}",
+        description=f"Description : {serverDescription}",
+        color=discord.Color.blue()
+    )
+    embed.add_field(name="Créateur du serveur", value=f"{owner}", inline=True)
+    embed.add_field(name="Nombre de membres", value=f"{member_count}", inline=True)
+    embed.add_field(name="Nombre de canaux textuels", value=f"{text_channels}", inline=True)
+    embed.add_field(name="Nombre de canaux vocaux", value=f"{voice_channels}", inline=True)
+    embed.add_field(name="Nombre de rôles", value=f"{roles}", inline=True)
+    embed.add_field(name="Nombre d'emoji", value=f"{emojis}", inline=True)
+    embed.set_thumbnail(url=guild.icon_url)
+    embed.set_footer(text=f"Serveur créé le {guild.created_at.strftime('%d/%m/%Y')}")
+    embed.set_image_url(guild.icon_url)
+
+    await ctx.send(embed=embed)
+
+@bot.command()
+async def say(ctx, embed, *texte):
+
+    try:
+        if embed == "yes" or embed == "oui":
+            embed = discord.Embed(
+                title= None,
+                description="{teste}",
+                color=discord.Color.green()
+            )
+        await ctx.send(texte)
+    except:
+        print("Une erreur c'est produite ! Le message ne sera donc pas envoyé !")
+        
+    
+
 __all__ = ['clear', 'ban', 'uban']
 # Les commandes qui seront prise en charge dans le main ! 
